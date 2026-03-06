@@ -9,13 +9,13 @@ try:
     df = pd.read_csv("jobs.csv")
 
     if not df.empty:
-        top = df.sort_values("match_score", ascending=False).head(10)
+        top = df.sort_values("match_score", ascending=False).head(20)
 
-        st.subheader("Top Matches")
+        st.subheader("Top 20 Matches")
         st.dataframe(top, use_container_width=True)
 
-        st.subheader("Best 5 Jobs")
-        for _, job in top.head(5).iterrows():
+        st.subheader("Best Jobs")
+        for _, job in top.iterrows():
             st.markdown(f"""
 ### {job['title']}
 

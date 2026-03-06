@@ -1,26 +1,36 @@
 import streamlit as st
 import pandas as pd
 
+st.set_page_config(page_title="AI Job Hunter", layout="wide")
+
 st.title("AI Job Hunter Dashboard")
 
-df = pd.read_csv("jobs.csv")
+try:
+    df = pd.read_csv("jobs.csv")
 
-top = df.sort_values("match_score",ascending=False).head(5)
+    if not df.empty:
+        top = df.sort_values("match_score", ascending=False).head(10)
 
-st.dataframe(top)
+        st.subheader("Top Matches")
+        st.dataframe(top, use_container_width=True)
 
-for _, job in top.iterrows():
-
-    st.markdown(f"""
+        st.subheader("Best 5 Jobs")
+        for _, job in top.head(5).iterrows():
+            st.markdown(f"""
 ### {job['title']}
 
-Organization: {job['organization']}
+**Organization:** {job['organization']}  
+**Location:** {job['location']}  
+**Salary:** {job['salary']}  
+**Match Score:** {job['match_score']}  
+**Source:** {job['source']}  
+**Found:** {job['date_found']}  
 
-Location: {job['location']}
-
-Salary: {job['salary']}
-
-Match Score: {job['match_score']}
-
-Apply: {job['link']}
+[Open posting]({job['link']})
 """)
+            st.divider()
+    else:
+        st.write("No jobs found yet.")
+
+except Exception as e:
+    st.error(f"Could not load jobs.csv: {e}")

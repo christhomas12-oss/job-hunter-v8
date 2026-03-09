@@ -33,7 +33,7 @@ TITLE_KEYWORDS = [
 
 def load_resume():
     try:
-        with open("resume.txt", "r", encoding="utf-8") as f:
+        with open("resume.txt", "r", encoding="utf-8",errors='replace') as f:
             return f.read().strip()
     except FileNotFoundError:
         return ""
